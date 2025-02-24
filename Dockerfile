@@ -1,20 +1,14 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM ubuntu:latest
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
+    python3.10 \
     python3-pip \
-    python3-venv \
-    && apt-get clean
+    git
 
-# Install Python dependencies
-RUN apt-get update && apt-get install -y python3-pyyaml
+RUN pip3 install PyYAML
 
-# Set the working directory
-WORKDIR /app
+COPY feed.py /usr/bin/feed.py
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+COPY entrypoint.sh /entrypoint.sh
 
-# Run the command to start the application
-CMD ["python", "your_script.py"]
+ENTRYPOINT ["/entrypoint.sh"]
